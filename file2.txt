@@ -1,1 +1,1 @@
-I want to know more about git
+I want to know more about git. Modified in new feature.
