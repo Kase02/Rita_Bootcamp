@@ -17,12 +17,16 @@ class LudoGame:
         player = self.players[self.current_player_index]
         current_position = self.piece_positions[player][piece_index]
         new_position = (current_position + spaces) % 52
+
+        # Check for opponent piece at new position and capture it
         if self.board[new_position] != 0:
             opponent = self.get_opponent_at_position(new_position)
             if opponent:
                 opponent_piece_index = self.get_opponent_piece_index(opponent, new_position)
                 self.piece_positions[opponent][opponent_piece_index] = 0
                 print(f"{player} captured {opponent}'s piece at position {new_position}!")
+
+        # Move the piece to the new position
         self.piece_positions[player][piece_index] = new_position
         self.board[new_position] = self.current_player_index + 1
 
@@ -38,7 +42,7 @@ class LudoGame:
     def get_opponent_at_position(self, position):
         for i, player in enumerate(self.players):
             if i != self.current_player_index:
-                for j, piece_position in enumerate(self.piece_positions[player]):
+                for piece_position in self.piece_positions[player]:
                     if piece_position == position:
                         return player
         return None
@@ -53,11 +57,11 @@ class LudoGame:
         print(f"\n{player}'s turn:")
         roll = self.roll_dice()
         print(f"{player} rolled a {roll}.")
+
         for i in range(4):
-            if self.is_piece_at_home(i):
-                print(f"Piece {i + 1} is at home. You can move it out with a roll of 6.")
-            else:
-                print(f"Piece {i + 1} is at position {self.piece_positions[player][i]}.")
+            piece_status = "at home" if self.is_piece_at_home(i) else f"at position {self.piece_positions[player][i]}"
+            print(f"Piece {i + 1} is {piece_status}.")
+
         piece_index = int(input("Enter the piece number you'd like to move (1-4): ")) - 1
         if self.is_piece_at_home(piece_index) and roll != 6:
             print("You can only move a piece out of home with a roll of 6.")
@@ -66,6 +70,8 @@ class LudoGame:
             print(f"{player} moved piece {piece_index + 1} to position {self.piece_positions[player][piece_index]}.")
             if self.is_piece_at_safe_house(piece_index):
                 print(f"{player}'s piece {piece_index + 1} is now at a safe house!")
+
+        # Move to the next player
         self.current_player_index = (self.current_player_index + 1) % 4
 
     def play_game(self):
@@ -77,5 +83,10 @@ class LudoGame:
                     return
 
 
-game = LudoGame()
-game.play_game()
+# Start the game
+if __name__ == "__main__":
+    game = LudoGame()
+    game.play_game()
+
+
+
