@@ -10,7 +10,7 @@ class TaskManagementSystem:
         self.users = {}  # Stores users with hashed passwords
         self.tasks = {}  # Stores tasks for each user
 
-def hash_password(self, password):
+    def hash_password(self, password):
         return hashlib.sha256(password.encode()).hexdigest()
 
     def register_user(self):
@@ -113,7 +113,3 @@ if __name__ == "__main__":
             break
         else:
             print("Invalid choice! Please try again.")
-
-
-
-
